@@ -1,10 +1,15 @@
+import React from "react";
 import config from "../config.json";
 import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import Banner from "../src/components/Banner";
+import {StyledFavoritos} from "../src/components/Favoritos";
 
 function Page() {
+  const [ valorDoFiltro, setvalorDoFiltro] = React.useState("");
+
   return (
     <>
       <CSSReset />
@@ -15,9 +20,11 @@ function Page() {
           flex: 1,
         }}
       >
-        <Menu />
+        <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setvalorDoFiltro} />
+        <Banner />
         <Header />
-        <Timeline playlists={config.playlists} />
+        <Timeline valorDoFiltro={valorDoFiltro} playlists={config.playlists} />
+        <Favoritos favoritos={config.favoritos} />
       </div>
     </>
   );
@@ -33,11 +40,11 @@ const StyledHeader = styled.div`
   }
 
   .user-info {
-    margin-top: 50px;
+    margin-top: 25px;
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 16px 32px;
+    padding: 8px 32px;
     gap: 16px;
   }
 `;
@@ -57,20 +64,23 @@ function Header() {
   );
 }
 
-function Timeline(props) {
+function Timeline({valorDoFiltro, ...props}) {
   const playlistsNames = Object.keys(props.playlists);
   return (
     <StyledTimeline>
       {playlistsNames.map((playlistName) => {
         const videos = props.playlists[playlistName];
-        console.log(videos);
         return (
-          <section>
+          <section key={playlistName}>
             <h2>{playlistName}</h2>
             <div>
-              {videos.map((video) => {
+              {videos.filter(video => {
+                const titleNormalized = video.title.toLowerCase();
+                const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
+                return titleNormalized.includes(valorDoFiltroNormalized);
+              }).map((video) => {
                 return (
-                  <a href={video.url}>
+                  <a href={video.url} key={video.url}>
                     <img src={video.thumb} />
                     <span>{video.title}</span>
                   </a>
@@ -83,3 +93,25 @@ function Timeline(props) {
     </StyledTimeline>
   );
 }
+
+function Favoritos(props) {
+  const favoritosNames = props.favoritos;
+  return (
+    <StyledFavoritos>
+      <section key='favoritos'>
+        <h2>AluraTubes Favoritos</h2>
+        <div>
+
+      {favoritosNames.map(favoritoName => {
+        return (
+              <a key={favoritoName.url} href={favoritoName.url}>
+                <img src={favoritoName.icone} className="icone-fav"/>
+                <span className="nome-fav">{favoritoName.nome}</span>
+              </a>
+        );
+      })};
+      </div>
+      </section>
+    </StyledFavoritos>
+  )
+};

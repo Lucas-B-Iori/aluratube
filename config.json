@@ -2,6 +2,18 @@
   "name": "Lucas Iori",
   "job": "Student",
   "github": "https://github.com/Lucas-B-Iori.png",
+  "favoritos": [
+    {
+      "icone": "https://github.com/omariosouto.png",
+      "nome": "Mario Souto",
+      "url": "https://www.youtube.com/c/DevSoutinho"
+    },
+    {
+      "icone": "https://yt3.googleusercontent.com/Fqr4oo0VR4l5KB2E7frxX00reaPw3oBX5csxGmijKx5UTDPY4xLPW0eYTnzh5TvkqNV35g-HHQ=s176-c-k-c0x00ffffff-no-rj",
+      "nome": "Alura",
+      "url": "https://www.youtube.com/@Alura"
+    }
+  ],
   "playlists": {
     "futebol": [
       {
